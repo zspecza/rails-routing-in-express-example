@@ -17,7 +17,7 @@ resources.load(app) # this is what starts the magic
 
 This function then iterates over the `app/controllers` folder, requiring each controller before mapping it as a resource using the `resource` module's `map()` function.
 
-This `map()` function also designates some empty boilerplate CRUD HTTP operation maps for `index`, `new`, `create`, `show`, `edit`, `update` and `delete`, respectively, so that writing out your controllers becomes an easy task.
+This `map()` function also designates some empty boilerplate CRUD HTTP operation maps for `index`, `new`, `create`, `show`, `edit`, `update` and `destroy`, respectively, so that writing out your controllers becomes an easy task.
 
 Controllers go inside the `app/controllers` folder, and they look like this:
 

@@ -1,6 +1,65 @@
 An Example of Rails-esque Routing in Express.js
 ============
 
+## Prelude
+
+So, you're working on your latest Express.js project, and everytime you want to add in a new route, you either add it to your `app.js` or `routes.js` file. Eventually, your file becomes an unmaintainable mixed mess of different routes and lacks a decent separation of concerns.
+
+This is not pretty:
+
+```coffeescript
+app.post '/signup', (req, res) ->
+  user = new User
+    firstName: req.body.firstName
+    lastName: req.body.lastName
+    email: req.body.email
+    password: req.body.password
+  user.save (error) -> if error then res.send error else res.redirect '/'
+
+app.post '/login', passport.authenticate 'local',
+  successRedirect: '/'
+  failureRedirect: '/oops'
+
+app.get '/logout', (req, res) ->
+  if req.isAuthenticated()
+    do req.logout
+    res.redirect '/'
+  else
+    res.send 'You were not logged in in the first place.'
+
+# List all user's students
+app.get '/students', (req, res) ->
+  if req.isAuthenticated()
+    Student.find parent: req.user._id, (error, students) ->
+      res.send error if error
+      res.render 'students/list',
+      title: 'Students'
+      students: students
+  else
+    res.send 'You need to be logged in to do that.'
+
+# add a student to the list
+app.post '/students', (req, res) ->
+  if req.isAuthenticated()
+    student = new Student
+      firstName: req.body.firstName
+      lastName: req.body.lastName
+      parent: req.user._id
+    student.save (error) ->
+      res.send error if error
+      res.redirect '/students'
+```
+
+There's a much better way to handle your routes. It's so easy to implement, too. I'm just surprised I havent seen anything about it in tutorials or examples. It's always the same excuse. "I'm going to only have a single app.js for brevity."
+
+Brevity is fine, but at least link to an example for the newcomers, or explain a decent separation of concerns. Don't promote bad practice. Node is meant to be _modular_.
+
+If you don't want to take the effort to explain it, that's why this repository exists. I created it so you could link to it and say, "Hey, guy who's interested in Node.js and from a Rails background or is a beginner - you'll like this!"
+
+## What are you on about?
+
+So, what is this?
+
 This is an example codebase on how to achieve Rails-like routing in Express.js. It is written in CoffeeScript, and relies only on Underscore.js for convenience. You can choose to not include Underscore in your own implementation, as this code base is not very large.
 Seriously, it's only about 50 lines of code. Nothing complicated at all. :smile:
 

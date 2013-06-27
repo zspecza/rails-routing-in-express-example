@@ -1,0 +1,11 @@
+{
+  "name": "routemap",
+  "version": "0.0.0",
+  "repository": "",
+  "author": "Declan de Wet",
+  "license": "MIT",
+  "dependencies": {
+    "express": "~3.3.0",
+    "underscore": "~1.4.4"
+  }
+}

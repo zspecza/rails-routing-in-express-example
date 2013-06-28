@@ -11,8 +11,13 @@ mappings = [
 map_route = (app, name, route) ->
   for mapping in mappings
     if route[mapping.action] isnt undefined
-      if mapping.action is 'index' then route_name = "/#{name}"
-      else route_name = "/#{name}/#{mapping.action}"
+      switch mapping.action
+        when 'index' or 'create' then route_name = "/#{name}"
+        when 'show' then route_name = "/#{name}/:id"
+        when 'edit' then route_name = "/#{name}/:id/edit"
+        when 'update' then route_name = "/#{name}/:id/update"
+        when 'destroy' then route_name = "#{name}/:id/destroy"
+        else route_name = "/#{name}/#{mapping.action}"
       app[mapping.verb](route_name, route[mapping.action])
 
 exports.map = (app, route_name) ->

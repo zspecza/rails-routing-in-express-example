@@ -20,6 +20,11 @@ routes = {
     action: 'update'
   }
 
+  '/timmy': {
+    controller: 'somethinghidden'
+    action: 'timmy'
+  }
+
 }
 
 module.exports = routes

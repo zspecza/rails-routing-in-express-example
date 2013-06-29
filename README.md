@@ -171,6 +171,37 @@ routes = {
 }
 ```
 
+## So what about route-specific middleware? How do you call that?
+
+Quite simple actually. I just check the type of object associated with the route. If it's just a plain function, then the route
+gets called and the app goes on it's way to any other route. But if the type is an array of functions, then it knows to call them in order.
+
+Have a look at the console output of the `/login` route. Middleware gets called from the `home` controller:
+
+```coffeescript
+first_middleware = (req, res, next) ->
+  console.log "First middleware making contact."
+  do next
+
+second_middleware = (req, res, next) ->
+  console.log "Second middleware received contact. Phasing to route sequence."
+  do next
+
+exports.index = (req, res) ->
+  res.send "Hello World from the Home Controller!"
+
+exports.about = (req, res) ->
+  res.send "About us - we're an awesome bunch of HTML bits."
+
+exports.login = [
+  first_middleware,
+  second_middleware,
+  (req, res) ->
+    res.send 'This is a login and it uses middleware. Check the console to confirm it is being called.'
+    console.log 'Final Route called.'
+]
+```
+
 ## Conclusion
 
 Have a look at the source for `resource.coffee` and `resources.coffee` in the `boot` folder. It really _is_ that simple to set up if you want to keep your code a little bit more organized and not have loads of `app.<verb>` calls in your main application file. Remember, though, that this is a rather opinionated setup - there are no checks to make sure the files are in the right place or any checks for if the `routes` file is empty, but adding that in would be equally as trivial as setting this up in the first place. I hope you enjoyed finding out the solution to better organizing your routes as I did coding it. :smile:

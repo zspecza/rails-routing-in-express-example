@@ -20,14 +20,14 @@ mappings = [
 # route
 map_route = (app, name, controller) ->
   for mapping in mappings
-    if controller[mapping.action] isnt undefined # if it's undefined, Express' "cannot GET /route" message appears
+    unless controller[mapping.action] is undefined # if it's undefined, Express' "cannot GET /route" message appears
       switch mapping.action
         when 'index' or 'create' then route = "/#{name}"
         when 'show' or 'update' or 'destroy' then route = "/#{name}/:id"
         when 'edit' then route = "/#{name}/:id/edit"
         else route = "/#{name}/#{mapping.action}"
-      if _.isFunction(controller[mapping.action])
-        app[mapping.verb](route, controller[mapping.action])
+      # map the route to the controller
+      app[mapping.verb](route, controller[mapping.action]) if _.isFunction(controller[mapping.action])
       # Handle middleware
       app[mapping.verb](route, fn for fn in controller[mapping.action]) if _.isArray(controller[mapping.action])
 

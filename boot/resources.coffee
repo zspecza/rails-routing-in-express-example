@@ -4,12 +4,11 @@
 
 fs = require 'fs'
 resource = require './resource'
-routes = require '../app/routes'
 _ = require 'underscore'
 
 # load function, reads a directory of controllers and dynamically
 # maps it to a route
-exports.load = (app, controllers_path = 'app/controllers') ->
+exports.load = (app, controllers_path = 'app/controllers', routes = require('../app/routes')) ->
   fs.readdir controllers_path, (error, controllers) ->
     throw error if error
     for controller in controllers

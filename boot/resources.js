@@ -3,19 +3,20 @@
   ./boot/resources.coffee
 */
 
-var fs, resource, routes, _;
+var fs, resource, _;
 
 fs = require('fs');
 
 resource = require('./resource');
 
-routes = require('../app/routes');
-
 _ = require('underscore');
 
-exports.load = function(app, controllers_path) {
+exports.load = function(app, controllers_path, routes) {
   if (controllers_path == null) {
     controllers_path = 'app/controllers';
+  }
+  if (routes == null) {
+    routes = require('../app/routes');
   }
   fs.readdir(controllers_path, function(error, controllers) {
     var controller, _i, _len, _results;

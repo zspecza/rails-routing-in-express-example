@@ -13,8 +13,11 @@ routes = require('../app/routes');
 
 _ = require('underscore');
 
-exports.load = function(app) {
-  fs.readdir('app/controllers', function(error, controllers) {
+exports.load = function(app, controllers_path) {
+  if (controllers_path == null) {
+    controllers_path = 'app/controllers';
+  }
+  fs.readdir(controllers_path, function(error, controllers) {
     var controller, _i, _len, _results;
 
     if (error) {
@@ -24,7 +27,7 @@ exports.load = function(app) {
     for (_i = 0, _len = controllers.length; _i < _len; _i++) {
       controller = controllers[_i];
       controller = controller.substr(0, controller.lastIndexOf('.'));
-      _results.push(resource.map(app, controller));
+      _results.push(resource.map(app, controller, controllers_path));
     }
     return _results;
   });
@@ -43,7 +46,7 @@ exports.load = function(app) {
         route_name = name;
         route_verb = 'get';
       }
-      controller = require("../app/controllers/" + route.controller);
+      controller = require("../" + controllers_path + "/" + route.controller);
       if (_.isFunction(controller[route.action])) {
         app[route_verb]("" + route_name, controller[route.action]);
       }

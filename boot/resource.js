@@ -77,10 +77,13 @@ map_route = function(app, name, controller) {
   return _results;
 };
 
-exports.map = function(app, controller_name) {
+exports.map = function(app, controller_name, controllers_path) {
   var controller;
 
-  controller = require("../app/controllers/" + controller_name);
+  if (controllers_path == null) {
+    controllers_path = 'app/controllers';
+  }
+  controller = require("../" + controllers_path + "/" + controller_name);
   map_route(app, controller_name, controller);
   return controller;
 };

@@ -32,7 +32,7 @@ map_route = (app, name, controller) ->
       app[mapping.verb](route, fn for fn in controller[mapping.action]) if _.isArray(controller[mapping.action])
 
 # map function calls map_route after requiring the controller
-exports.map = (app, controller_name) ->
-  controller = require "../app/controllers/#{controller_name}"
+exports.map = (app, controller_name, controllers_path = 'app/controllers') ->
+  controller = require "../#{controllers_path}/#{controller_name}"
   map_route app, controller_name, controller
   return controller

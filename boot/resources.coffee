@@ -9,12 +9,12 @@ _ = require 'underscore'
 
 # load function, reads a directory of controllers and dynamically
 # maps it to a route
-exports.load = (app) ->
-  fs.readdir 'app/controllers', (error, controllers) ->
+exports.load = (app, controllers_path = 'app/controllers') ->
+  fs.readdir controllers_path, (error, controllers) ->
     throw error if error
     for controller in controllers
       controller = controller.substr(0, controller.lastIndexOf('.')) # remove file extension
-      resource.map app, controller # map the controller to the app
+      resource.map app, controller, controllers_path # map the controller to the app
 
   # Analyzes custom routes in ./app/routes.coffee
   # and maps them to controller actions
@@ -28,7 +28,7 @@ exports.load = (app) ->
       else
         route_name = name
         route_verb = 'get' # default to a GET request if there is no HTTP verb present in the array
-      controller = require "../app/controllers/#{route.controller}"
+      controller = require "../#{controllers_path}/#{route.controller}"
       # map the route to a controller action
       app[route_verb] "#{route_name}", controller[route.action] if _.isFunction controller[route.action]
       # Handle middleware

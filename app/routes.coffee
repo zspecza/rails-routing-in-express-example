@@ -10,19 +10,14 @@ routes = {
     controller: 'home'
   }
 
-  'get /user': {
+  '/about': {
     controller: 'home'
-    action: 'user'
+    action: 'about'
   }
 
-  'put /post': {
-    controller: 'posts'
-    action: 'update'
-  }
-
-  '/timmy': {
-    controller: 'somethinghidden'
-    action: 'timmy'
+  '/login': {
+    controller: 'home'
+    action: 'login'
   }
 
 }

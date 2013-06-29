@@ -1,15 +1,23 @@
+###
+  ./boot/resources.coffee
+###
+
 fs = require 'fs'
 resource = require './resource'
 routes = require '../app/routes'
 _ = require 'underscore'
 
+# load function, reads a directory of controllers and dynamically
+# maps it to a route
 exports.load = (app) ->
-  fs.readdir 'app/controllers', (error, files) ->
+  fs.readdir 'app/controllers', (error, controllers) ->
     throw error if error
-    for file in files
-      file = file.substr(0, file.lastIndexOf('.'))
-      resource.map app, file
+    for controller in controllers
+      controller = controller.substr(0, controller.lastIndexOf('.')) # remove file extension
+      resource.map app, controller # map the controller to the app
 
+  # Analyzes custom routes in ./app/routes.coffee
+  # and maps them to controller actions
   _.each routes, (route, name) ->
     if _.isObject route
       route.action = 'index' if route.action is undefined
@@ -20,5 +28,8 @@ exports.load = (app) ->
       else
         route_name = name
         route_verb = 'get'
-      route_file = require "../app/controllers/#{route.controller}"
-      app[route_verb] "#{route_name}", route_file[route.action]
+      controller = require "../app/controllers/#{route.controller}"
+      if _.isFunction controller[route.action]
+        app[route_verb] "#{route_name}", controller[route.action]
+      # Handle middleware
+      app[route_verb] "#{route_name}", fn for fn in controller[route.action] if _.isArray controller[route.action]

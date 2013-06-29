@@ -61,7 +61,7 @@ If you don't want to take the effort to explain it, that's why this repository e
 So, what is this?
 
 This is an example codebase on how to achieve Rails-like routing in Express.js. It is written in CoffeeScript, and relies only on Underscore.js for convenience. You can choose to not include Underscore in your own implementation, as this code base is not very large.
-Seriously, it's only about 50 lines of code. Nothing complicated at all. :smile:
+Seriously, it's only about 50 (EDIT: was 50, but has grown by a few lines to support middleware) lines of code. Nothing complicated at all. :smile:
 
 There are only two files doing all of this magical work: `boot/resource.coffee` and `boot/resources.coffee`.
 
